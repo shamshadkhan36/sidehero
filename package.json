@@ -1,0 +1,25 @@
+{
+  "name": "sidehero-entertainment",
+  "version": "1.0.0",
+  "description": "Side Hero Entertainment - High-end Cinematic Website inspired by DG Cinema",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  },
+  "keywords": [
+    "cinema",
+    "film-production",
+    "side-hero",
+    "entertainment",
+    "dg-cinema-inspired",
+    "interactive-web"
+  ],
+  "author": "Side Hero Entertainment",
+  "license": "MIT"
+}

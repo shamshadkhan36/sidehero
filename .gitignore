@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+
+# Production build
+dist/
+build/
+
+# Temporary extraction files
+*.tmp
+sidehero_home.html
+core_team.html
+films.html
+general.html
+extracted_sidehero.json
+films_extracted.json
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
