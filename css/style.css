@@ -220,18 +220,27 @@ a {
 
 .preloader-counter {
   font-family: var(--font-mono);
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 4rem;
+  font-weight: 800;
+  color: #FFFFFF;
   letter-spacing: -0.04em;
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 0.25rem;
+  line-height: 1;
 }
 
-.preloader-counter span {
-  font-size: 1.5rem;
+.preloader-counter .counter-number {
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.preloader-counter .counter-symbol {
+  font-size: 2rem;
   color: var(--color-red);
+  font-weight: 700;
 }
 
 .preloader-status {

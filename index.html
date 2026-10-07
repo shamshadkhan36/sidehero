@@ -24,7 +24,7 @@
   <!-- ==========================================================================
        Preloader (Signature DG Cinema Feature)
        ========================================================================== -->
-  <div id="preloader" class="preloader">
+  <div id="preloader" class="preloader" onclick="dismissPreloader()">
     <div class="preloader-stripes">
       <div class="preloader-stripe-wrap"><div class="preloader-stripe"></div></div>
       <div class="preloader-stripe-wrap"><div class="preloader-stripe"></div></div>
@@ -34,13 +34,43 @@
     <div class="preloader-frame">
       <img src="./images/logo.png" alt="Side Hero Logo" class="preloader-logo" />
       <div class="preloader-counter">
-        <span id="preloader-counter-val">0</span><span>%</span>
+        <span id="preloader-counter-val" class="counter-number">0</span><span class="counter-symbol">%</span>
       </div>
       <div class="preloader-status">
         <span class="red-dot"></span> INITIALIZING CINEMATIC REEL
       </div>
     </div>
   </div>
+  <script>
+    (function(){
+      var counter = document.getElementById('preloader-counter-val');
+      var preloader = document.getElementById('preloader');
+      var start = null;
+      var duration = 1100;
+      function dismiss() {
+        if (!preloader || preloader.dataset.done) return;
+        preloader.dataset.done = 'true';
+        preloader.classList.add('fade-out');
+        document.body.classList.remove('no-scroll');
+        setTimeout(function(){ preloader.style.display = 'none'; }, 700);
+      }
+      window.dismissPreloader = dismiss;
+      var timer = setTimeout(dismiss, 1600);
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var val = Math.round(p * 100);
+        if (counter) counter.textContent = val;
+        if (p < 1) {
+          requestAnimationFrame(step);
+        } else {
+          clearTimeout(timer);
+          setTimeout(dismiss, 120);
+        }
+      }
+      requestAnimationFrame(step);
+    })();
+  </script>
 
   <!-- ==========================================================================
        Header & Navigation

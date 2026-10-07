@@ -1,9 +1,67 @@
-/**
- * Side Hero Entertainment - Main Client Script
- * Inspired by DG Cinema (https://www.dg-cinema.com/en)
- */
+// Failsafe state
+let isPreloaderDismissed = false;
 
-document.addEventListener('DOMContentLoaded', () => {
+function dismissPreloader() {
+  if (isPreloaderDismissed) return;
+  isPreloaderDismissed = true;
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.classList.add('fade-out');
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 700);
+  }
+  document.body.classList.remove('no-scroll');
+}
+
+function initPreloader() {
+  const preloader = document.getElementById('preloader');
+  const counterEl = document.getElementById('preloader-counter-val');
+  if (!preloader) {
+    document.body.classList.remove('no-scroll');
+    return;
+  }
+
+  // Click or keydown dismiss immediately
+  preloader.addEventListener('click', dismissPreloader);
+  window.addEventListener('keydown', dismissPreloader, { once: true });
+
+  // Unconditional failsafe timer: max 1.5s then ALWAYS dismiss
+  const safetyTimer = setTimeout(() => {
+    if (counterEl) counterEl.textContent = '100';
+    dismissPreloader();
+  }, 1500);
+
+  if (!counterEl) {
+    dismissPreloader();
+    return;
+  }
+
+  let start = null;
+  const duration = 1200; // ms
+
+  function step(timestamp) {
+    if (isPreloaderDismissed) return;
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    
+    // Smooth ease-out curve
+    const easeOutVal = 1 - Math.pow(1 - progress, 3);
+    const count = Math.round(easeOutVal * 100);
+    counterEl.textContent = count;
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      clearTimeout(safetyTimer);
+      setTimeout(dismissPreloader, 150);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+function initApp() {
   // 1. Interactive Preloader
   initPreloader();
 
@@ -24,40 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Active Nav Link on Scroll
   initScrollSpy();
-});
+}
 
-/* ==========================================================================
-   1. Preloader Progression (0% -> 100%)
-   ========================================================================== */
-function initPreloader() {
-  const preloader = document.getElementById('preloader');
-  const counterEl = document.getElementById('preloader-counter-val');
-  if (!preloader || !counterEl) return;
-
-  const duration = 1600; // ms
-  const startTime = performance.now();
-
-  function update(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    
-    // Smooth ease-out curve
-    const easeOutVal = 1 - Math.pow(1 - progress, 3);
-    const count = Math.round(easeOutVal * 100);
-
-    counterEl.textContent = count;
-
-    if (progress < 1) {
-      requestAnimationFrame(update);
-    } else {
-      setTimeout(() => {
-        preloader.classList.add('fade-out');
-        document.body.classList.remove('no-scroll');
-      }, 200);
-    }
-  }
-
-  requestAnimationFrame(update);
+// Immediate execution or on DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
 }
 
 /* ==========================================================================
